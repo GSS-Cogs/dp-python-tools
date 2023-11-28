@@ -10,9 +10,9 @@ Simple reusable python resources for digital publishing.
 
 The following clients, helpers etc are availible upon installation of this package.
 
-| Name | Import | Description |
+| Name | Description |
 | ----- | ---------------- | ------ |
-| [config](./dpytools/config/README.md) | `from dpytools import Config` | A simple validating configuration class |
+| [Config](./dpytools/config/README.md) | A simple validating configuration class |
 **TODO** - all helpers and clients to appear in this list.
 
 The usage instructions please see the readme in the appropriate sub directory, this can also be access by clicking the link in the "name" column above.
