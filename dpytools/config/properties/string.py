@@ -8,7 +8,7 @@ class StringProperty(BaseProperty):
     min_len: Optional[int]
     max_len: Optional[int]
 
-    def type_is_valid(self) -> Optional[Exception]:
+    def type_is_valid(self):
         """
         Validate that the property looks like
         its of the correct type 
@@ -18,7 +18,7 @@ class StringProperty(BaseProperty):
         except Exception as err:
             raise Exception(f"Cannot cast {self.name} value {self.value} to string.") from err
 
-    def secondary_validation_passed(self) -> Optional[Exception]:
+    def secondary_validation_passed(self):
         """
         Non type based validation you might want to
         run against a configuration value of this kind.
