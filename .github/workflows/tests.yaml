@@ -18,7 +18,7 @@ jobs:
         run: pip install poetry
 
       - name: Install test dependencies
-        run: poetry install --dev
+        run: poetry install
 
       - name: Run Pytest
         run: pipenv run pytest --cov-report term-missing --cov=src --cov-config=./tests/coverage.rc ./tests/
