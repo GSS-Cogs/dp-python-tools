@@ -11,7 +11,7 @@ Simple reusable python resources for digital publishing.
 The following clients, helpers etc are availible upon installation of this package.
 
 | Name | Description |
-| ----- | ---------------- | ------ |
+| ----- | ---------------- |
 | [Config](./dpytools/config/README.md) | A simple validating configuration class |
 **TODO** - all helpers and clients to appear in this list.
 
