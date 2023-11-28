@@ -15,10 +15,10 @@ jobs:
           python-version: '3.9'
 
       - name: Install pipenv
-        run: pip install pipenv
+        run: pip install poetry
 
       - name: Install test dependencies
-        run: pipenv sync --dev
+        run: poetry install --dev
 
       - name: Run Pytest
         run: pipenv run pytest --cov-report term-missing --cov=src --cov-config=./tests/coverage.rc ./tests/

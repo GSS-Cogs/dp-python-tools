@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "dp-python-tools"
+name = "dpytools"
 version = "0.1.0"
 description = "Simple reusable python resources for digital publishing"
 authors = ["Your Name <you@example.com>"]

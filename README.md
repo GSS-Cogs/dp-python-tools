@@ -19,9 +19,10 @@ The usage instructions please see the readme in the appropriate sub directory, t
 
 ## Development
 
-All commits that make it to PR should have black and ruff already ran against them, you can do this via `make fmt`.
-`
+All commits that make it to PR should have black and ruff already ran against them, you can do this via `make fmt` and you can lint via `make lint`.
+
+For a full list of functionality provided by the makefile just run a naked `make`.
 
 ### Repository Organization
 
-Each client, helper etc should be a sub directory of `./dpytools`. Separation between these sub codebaes should be maintained as much as possible aginst the day where we want to break some or all of these tools out into separate repositories.
+Each client, helper etc should be a sub directory of `./dpytools`. Separation between these sub codebases should be maintained as much as possible aginst the day where we want to break some or all of these tools out into separate repositories.
