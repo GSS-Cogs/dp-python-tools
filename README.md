@@ -14,11 +14,12 @@ Follow these steps to install the package on your local machine:
     git clone https://github.com/GSS-Cogs/dp-python-tools.git
 
 2. **Navigate to the cloned repositry**
-| cd dp-python-tools
+    ```bash
+    cd dp-python-tools
 
 3. **Install all the packages** 
-
-| pip install 
+    ```bash
+    pip install 
 
 
 ## Usage
