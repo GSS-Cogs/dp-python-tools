@@ -4,7 +4,16 @@ Simple reusable python resources for digital publishing.
 
 ## Installation
 
-**TODO**
+Follow these steps to install the package on your local machine:
+
+1. **Install the package**
+
+    Open your terminal and run the following command:
+
+    ```bash
+    pip install git+https://github.com/GSS-Cogs/dp-python-tools.git
+    ```
+
 
 ## Usage
 
