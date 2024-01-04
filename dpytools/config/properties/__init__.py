@@ -1,1 +1,1 @@
-from string import StringProperty
+from .string import StringProperty

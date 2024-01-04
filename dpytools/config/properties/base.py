@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Any, Union, Tuple, Optional
 
 @dataclass
-class BaseProperty(meta=ABCMeta):
+class BaseProperty(metaclass=ABCMeta):
     name: str
     value: Any
 
