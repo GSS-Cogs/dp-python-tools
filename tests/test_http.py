@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
 from http.client import HTTPResponse, HTTPException
-from dpytools.http_clients.http import HttpClient  
+from dpytools.http_clients.http_custom import HttpClient  
 
 # Mock the HTTPSConnection class
 @patch('http.client.HTTPSConnection')
