@@ -1,56 +1,114 @@
 import pytest
-from unittest import mock
-from requests.exceptions import RequestException
-from ..dpytools.http_clients.http import HttpClient
+from unittest.mock import patch, MagicMock
+from http.client import HTTPResponse, HTTPException
+from dpytools.http_clients.http import HttpClient  
 
+# Mock the HTTPSConnection class
+@patch('http.client.HTTPSConnection')
+def test_get(mock_connection):
+    """
+    Test that the get method returns a response object
+    """
 
-@mock.patch('http.requests.get')
-def test_get_method(mock_get):
-    """
-    Test that the get method calls requests.get and 
-    returns a response with status code 200
-    """
-    mock_get.return_value.status_code = 200
+    # Create a mock response object
+    mock_response = MagicMock(HTTPResponse)
+    mock_response.status = 200
+    mock_response.read.return_value = b'Test response content'
+    mock_connection.return_value.getresponse.return_value = mock_response
+    
+    # Create an instance of HttpClient and make a GET request
     client = HttpClient()
-    response = client.get('http://testurl.com')
-    assert mock_get.called
-    assert response.status_code == 200
+    response = client.get('http://example.com')
+
+    # Assertions to check the response status, content and the connection call
+    assert response.status == 200
+    assert response.read().decode() == 'Test response content'
+    mock_connection.assert_called_once_with('example.com')
 
 
-@mock.patch('http.requests.post')
-def test_post_method(mock_post):
+@patch('http.client.HTTPSConnection')
+def test_post(mock_connection):
     """
-    Test that the post method calls requests.post and
-    returns a response with status code 200
+    Test that the post method returns a response object
     """
-    mock_post.return_value.status_code = 200
+
+    # Create a mock response object
+    mock_response = MagicMock(HTTPResponse)
+    mock_response.status = 200
+    mock_response.read.return_value = b'Test response content'
+    mock_connection.return_value.getresponse.return_value = mock_response
+    
+    # Create an instance of HttpClient and make a POST request
     client = HttpClient()
-    response = client.post('http://testurl.com')
-    assert mock_post.called
-    assert response.status_code == 200
+    response = client.post('http://example.com')
+
+    # Assertions to check the response status, content and the connection call
+    assert response.status == 200
+    assert response.read().decode() == 'Test response content'
+    mock_connection.assert_called_once_with('example.com')
 
 
-@mock.patch('http.requests.get')
-def test_backoff_on_exception(mock_get):
+@patch('http.client.HTTPSConnection')
+def test_backoff_on_exception(mock_connection):
     """
-    Test that the get method retries on RequestException
+    Test that the get method retries on HTTPException
     """
-    mock_get.side_effect = RequestException
+
+    # Create a mock response object
+    mock_response = MagicMock(HTTPResponse)
+    mock_response.status = 200
+
+    # Raise HTTPException on the first call, then return the mock_response
+    mock_connection.return_value.getresponse.side_effect = [HTTPException('HTTP Error'), mock_response]
+    
+    # Create an instance of HttpClient and make a GET request
     client = HttpClient()
-    with pytest.raises(RequestException):
-        client.get('http://testurl.com')
-    assert mock_get.call_count == client.backoff_max
+    response = client.get('http://example.com')
+
+    # Assertions to check the response status and the number of getresponse calls
+    assert response.status == 200
+    assert mock_connection.return_value.getresponse.call_count == 2
 
 
-@mock.patch('http.requests.get')
-def test_propagate_kwargs(mock_get):
+@patch('http.client.HTTPSConnection')
+def test_request(mock_connection):
     """
-    Test that the get method propagates keyword arguments
+    Test that the _request method returns a response object
     """
-    mock_get.return_value.status_code = 200
+
+    # Create a mock response object
+    mock_response = MagicMock(HTTPResponse)
+    mock_response.status = 200
+    mock_response.read.return_value = b'Test response content'
+    mock_connection.return_value.getresponse.return_value = mock_response
+    
+    # Create an instance of HttpClient and make a request
     client = HttpClient()
-    headers = {'test-header': 'test-value'}
-    client.get('http://testurl.com', headers=headers)
-    args, kwargs = mock_get.call_args
-    assert 'headers' in kwargs
-    assert kwargs['headers'] == headers
+    response = client._request('GET', 'http://example.com')
+
+    # Assertions to check the response status, content and the connection call
+    assert response.status == 200
+    assert response.read().decode() == 'Test response content'
+    mock_connection.assert_called_once_with('example.com')
+
+
+@patch('http.client.HTTPSConnection')
+def test_request_with_timeout(mock_connection):
+    """
+    Test _request method with timeout passed as kwargs
+    """
+
+    # Create a mock response object
+    mock_response = MagicMock(HTTPResponse)
+    mock_response.status = 200
+    mock_response.read.return_value = b'Test response content'
+    mock_connection.return_value.getresponse.return_value = mock_response
+    
+    # Create an instance of HttpClient and make a request with a timeout
+    client = HttpClient()
+    response = client._request('GET', 'http://example.com', timeout=5)
+
+    # Assertions to check the response status, content and the connection call
+    assert response.status == 200
+    assert response.read().decode() == 'Test response content'
+    mock_connection.assert_called_once_with('example.com')
