@@ -10,7 +10,7 @@ def log_retry(details):
     logging.error(f"Request failed, retrying... Attempt #{details['tries']}")
 
 
-class HttpClient:
+class BaseHttpClient:
     # Initialize HttpClient with a backoff_max value
     def __init__(self, backoff_max=30):
         self.backoff_max = backoff_max
@@ -55,15 +55,15 @@ class HttpClient:
 
             # Raise an exception if the HTTP status is 400 or above
             if response.status >= 400:
-                raise HTTPException(f"HTTP request failed with status {response.status}, response: {response_content.decode()}")
+                raise HTTPException(f"{method} request to {url} failed with status {response.status}, response: {response_content.decode()}")
 
             return response
 
         # Handle HTTPException separately to log and retry
         except HTTPException as e:
-            logging.error(f"Request failed due to {str(e)}, retrying...")
+            logging.error(f"Request failed due to {str(e)} when sending a {method} to {url} with headers {headers}, retrying...")
             raise
         # Handle other exceptions
         except Exception as e:
-            logging.error(f"An unexpected error occurred: {str(e)}")
+            logging.error(f"An unexpected error occurred: {str(e)} when sending a {method} to {url} with headers {headers}")
             raise
