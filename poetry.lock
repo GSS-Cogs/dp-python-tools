@@ -270,20 +270,6 @@ files = [
 test = ["pytest (>=6)"]
 
 [[package]]
-name = "http-client"
-version = "0.1.22"
-description = "Fast and robust HTTP client based on PyCurl"
-optional = false
-python-versions = "*"
-files = [
-    {file = "http_client-0.1.22.tar.gz", hash = "sha256:f33d77e4e08b70659e1497eeb3d2121a3c6e8a4c252b3c6a56e87a16bb442f91"},
-]
-
-[package.dependencies]
-pycurl = "*"
-six = "*"
-
-[[package]]
 name = "idna"
 version = "3.6"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -421,16 +407,6 @@ dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
-name = "pycurl"
-version = "7.45.2"
-description = "PycURL -- A Python Interface To The cURL library"
-optional = false
-python-versions = ">=3.5"
-files = [
-    {file = "pycurl-7.45.2.tar.gz", hash = "sha256:5730590be0271364a5bddd9e245c9cc0fb710c4cbacbdd95264a3122d23224ca"},
-]
-
-[[package]]
 name = "pytest"
 version = "7.4.4"
 description = "pytest: simple powerful testing with Python"
@@ -518,17 +494,6 @@ files = [
 ]
 
 [[package]]
-name = "six"
-version = "1.16.0"
-description = "Python 2 and 3 compatibility utilities"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
-files = [
-    {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
-    {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
-]
-
-[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -569,4 +534,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "eb6fcf9517e94cc494a812a0f83d8907331f360ab237c66c9251a081aaf8289d"
+content-hash = "e6fba5c3c204253c8f04dfe78bb5a5e7253af4df9bdf24455f53b5c90645f7fa"
