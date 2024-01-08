@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
 from http.client import HTTPResponse, HTTPException
-from dpytools.http_clients.http_custom import HttpClient  
+from dpytools.http_clients.base import BaseHttpClient  
 
 # Mock the HTTPSConnection class
 @patch('http.client.HTTPSConnection')
@@ -16,8 +16,8 @@ def test_get(mock_connection):
     mock_response.read.return_value = b'Test response content'
     mock_connection.return_value.getresponse.return_value = mock_response
     
-    # Create an instance of HttpClient and make a GET request
-    client = HttpClient()
+    # Create an instance of BaseHttpClient and make a GET request
+    client = BaseHttpClient()
     response = client.get('http://example.com')
 
     # Assertions to check the response status, content and the connection call
@@ -38,8 +38,8 @@ def test_post(mock_connection):
     mock_response.read.return_value = b'Test response content'
     mock_connection.return_value.getresponse.return_value = mock_response
     
-    # Create an instance of HttpClient and make a POST request
-    client = HttpClient()
+    # Create an instance of BaseHttpClient and make a POST request
+    client = BaseHttpClient()
     response = client.post('http://example.com')
 
     # Assertions to check the response status, content and the connection call
@@ -61,8 +61,8 @@ def test_backoff_on_exception(mock_connection):
     # Raise HTTPException on the first call, then return the mock_response
     mock_connection.return_value.getresponse.side_effect = [HTTPException('HTTP Error'), mock_response]
     
-    # Create an instance of HttpClient and make a GET request
-    client = HttpClient()
+    # Create an instance of BaseHttpClient and make a GET request
+    client = BaseHttpClient()
     response = client.get('http://example.com')
 
     # Assertions to check the response status and the number of getresponse calls
@@ -82,8 +82,8 @@ def test_request(mock_connection):
     mock_response.read.return_value = b'Test response content'
     mock_connection.return_value.getresponse.return_value = mock_response
     
-    # Create an instance of HttpClient and make a request
-    client = HttpClient()
+    # Create an instance of BaseHttpClient and make a request
+    client = BaseHttpClient()
     response = client._request('GET', 'http://example.com')
 
     # Assertions to check the response status, content and the connection call
@@ -104,8 +104,8 @@ def test_request_with_timeout(mock_connection):
     mock_response.read.return_value = b'Test response content'
     mock_connection.return_value.getresponse.return_value = mock_response
     
-    # Create an instance of HttpClient and make a request with a timeout
-    client = HttpClient()
+    # Create an instance of BaseHttpClient and make a request with a timeout
+    client = BaseHttpClient()
     response = client._request('GET', 'http://example.com', timeout=5)
 
     # Assertions to check the response status, content and the connection call
