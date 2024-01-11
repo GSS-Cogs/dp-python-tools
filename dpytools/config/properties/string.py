@@ -31,11 +31,14 @@ class StringProperty(BaseProperty):
         if self.regex:
             # TODO - confirm the value matches the regex
             ...
+            assert self.value == self.regex
 
         if self.min_len:
             # TODO - confirm the string matches of exceeds the minimum length
             ...
+            assert len(self.value) >= self.min_len
 
         if self.max_len:
             # TODO - confirm the value matches or is less than the max length
             ...
+            assert len(self.value) <= self.max_len

@@ -10,12 +10,23 @@ class BaseProperty(metaclass=ABCMeta):
 
     # TODO: getter
     # allow someone to get the property
+    def _get_name(self):
+        return self.name
+
+    def _get_value(self):
+        return self.value
 
     # TODO: setter
     # categorically disallow anyone from
     # changing a property after the class
     # has been instantiated.
     # Refuse to do it, and log an error.
+
+    def _set_name(self, value):
+        self.name = value
+
+    def _set_value(self, new_value):
+        self.value = new_value
 
     @abstractmethod
     def type_is_valid(self):
