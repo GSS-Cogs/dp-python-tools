@@ -23,7 +23,7 @@ def test_get(mock_request):
     # Assertions to check the response status, content and the request call
     assert response.status_code == 200
     assert response.content.decode() == 'Test response content'
-    mock_request.assert_called_once_with('GET', 'http://example.com', timeout=None)
+    mock_request.assert_called_once_with('GET', 'http://example.com')
 
 
 @patch('requests.request')
@@ -45,7 +45,7 @@ def test_post(mock_request):
     # Assertions to check the response status, content and the request call
     assert response.status_code == 200
     assert response.content.decode() == 'Test response content'
-    mock_request.assert_called_once_with('POST', 'http://example.com', timeout=None)
+    mock_request.assert_called_once_with('POST', 'http://example.com')
 
 
 @patch('requests.request')
