@@ -64,14 +64,14 @@ class DpLogger:
         self.namespace = namespace
         self.test_mode = test_mode
 
-    def _log(self, event, level, error: Optional[List] = None, data: Optional[Dict] = None):
-        log_entry = self._create_log_entry(event, level, data, error)
+    def _log(self, event, level, error: Optional[List] = None, data: Optional[Dict] = None, raw: str = None):
+        log_entry = self._create_log_entry(event, level, data, error, raw)
         self._logger.log(level, log_entry)
 
         if self.test_mode:
             return log_entry
 
-    def _create_log_entry(self, event, level, data, error) -> Dict:
+    def _create_log_entry(self, event, level, data, error, raw) -> Dict:
         log_entry = {
                 "created_at": datetime.now().isoformat(),  # TODO - might not be quite the right ISOtime, investigate
                 "namespace": self.namespace,
@@ -84,6 +84,9 @@ class DpLogger:
 
         if error:
             log_entry["errors"] = create_error_dict(error)
+
+        if raw:
+            log_entry["raw"] = raw
 
         return log_entry
 
