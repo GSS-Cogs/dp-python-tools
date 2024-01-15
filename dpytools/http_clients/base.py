@@ -1,7 +1,6 @@
 import backoff
-import http.client
-from http.client import HTTPException
-from urllib.parse import urlparse
+import requests
+from requests.exceptions import HTTPError
 import logging
 
 
@@ -16,57 +15,36 @@ class BaseHttpClient:
         self.backoff_max = backoff_max
 
     # GET request method with exponential backoff
-    @backoff.on_exception(
-        backoff.expo, HTTPException, max_time=30, on_backoff=log_retry
-    )
+    @backoff.on_exception(backoff.expo, HTTPError, max_time=30, on_backoff=log_retry)
     def get(self, url, *args, **kwargs):
-        timeout = kwargs.pop("timeout", None)
-        logging.info(f"Sending GET request to {url}")
-        return self._request("GET", url, timeout=timeout, *args, **kwargs)
+        return self._handle_request("GET", url, *args, **kwargs)
 
     # POST request method with exponential backoff
     @backoff.on_exception(
         backoff.expo,
-        HTTPException,
+        HTTPError,
         max_time=30,
         on_backoff=log_retry,
     )
     def post(self, url, *args, **kwargs):
+        return self._handle_request("POST", url, *args, **kwargs)
+
+    # Method to handle requests for GET and POST
+    def _handle_request(self, method, url, *args, **kwargs):
         timeout = kwargs.pop("timeout", None)
-        logging.info(f"Sending POST request to {url}")
-        return self._request("POST", url, timeout=timeout, *args, **kwargs)
-
-    # Private method to handle the request
-    def _request(self, method, url, *args, **kwargs):
+        logging.info(f"Sending {method} request to {url}")
         try:
-            headers = kwargs.pop("headers", {})
-
-            url_parts = urlparse(url)
-            https_connection = http.client.HTTPSConnection(url_parts.netloc)
-            path = url_parts.path or "/"
-            https_connection.request(method, path, headers=headers, *args, **kwargs)
-
-            response = https_connection.getresponse()
-            response_content = response.read()
-            https_connection.close()
-
-            # Raise an exception if the HTTP status is 400 or above
-            if response.status >= 400:
-                raise HTTPException(
-                    f"{method} request to {url} failed with status {response.status}, response: {response_content.decode()}"
-                )
-
+            response = requests.request(method, url, timeout=timeout, *args, **kwargs)
+            response.raise_for_status()
             return response
 
-        # Handle HTTPException separately to log and retry
-        except HTTPException as e:
+        except HTTPError as http_err:
             logging.error(
-                f"Request failed due to {str(e)} when sending a {method} to {url} with headers {headers}, retrying..."
+                f"HTTP error occurred: {http_err} when sending a {method} to {url} with headers {kwargs.get('headers')}"
             )
             raise
-        # Handle other exceptions
-        except Exception as e:
+        except Exception as err:
             logging.error(
-                f"An unexpected error occurred: {str(e)} when sending a {method} to {url} with headers {headers}"
+                f"Other error occurred: {err} when sending a {method} to {url} with headers {kwargs.get('headers')}"
             )
             raise
