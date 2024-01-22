@@ -4,6 +4,7 @@ import traceback
 import json
 from datetime import datetime
 
+
 def level_to_severity(level: int) -> int:
     """
     Helper to convert logging level to severity, please
@@ -18,6 +19,7 @@ def level_to_severity(level: int) -> int:
     else:
         return 3
 
+
 def create_error_dict(error: Exception) -> List[Dict]:
     """
     Take a python Exception and create a sub dict/document
@@ -28,11 +30,12 @@ def create_error_dict(error: Exception) -> List[Dict]:
     # this will be fine for now.
     error_dict = {
         "message": str(error),
-        "stack_trace": traceback.format_exc().split("\n")
+        "stack_trace": traceback.format_exc().split("\n"),
     }
 
     # Listify in keeping with expected DP logging structures
     return [error_dict]
+
 
 def dp_serializer(event_log, **kw) -> Dict:
     """
@@ -45,26 +48,31 @@ def dp_serializer(event_log, **kw) -> Dict:
     # "event" key - we just want its contents
     return json.dumps(event_log["event"], **kw)
 
-class DpLogger:
 
+class DpLogger:
     def __init__(self, namespace: str, test_mode: bool = False):
         """
         Simple python logger to create structured logs in keeping
         with https://github.com/ONSdigital/dp-standards/blob/main/LOGGING_STANDARDS.md
-        
+
         namespace: (required) the namespace for the app in question
-        test_mode: FOR USAGE DURING TESTING ONLY, makes logging statments return
-                   their structured logs.
+        test_mode: FOR USAGE DURING TESTING ONLY, makes logging statements return their structured logs.
         """
         structlog.configure(
-        processors=[
-            structlog.processors.JSONRenderer(dp_serializer)
-        ])
+            processors=[structlog.processors.JSONRenderer(dp_serializer)]
+        )
         self._logger = structlog.stdlib.get_logger()
         self.namespace = namespace
         self.test_mode = test_mode
 
-    def _log(self, event, level, error: Optional[List] = None, data: Optional[Dict] = None, raw: str = None):
+    def _log(
+        self,
+        event,
+        level,
+        error: Optional[List] = None,
+        data: Optional[Dict] = None,
+        raw: str = None,
+    ):
         log_entry = self._create_log_entry(event, level, data, error, raw)
         self._logger.log(level, log_entry)
 
@@ -73,14 +81,14 @@ class DpLogger:
 
     def _create_log_entry(self, event, level, data, error, raw) -> Dict:
         log_entry = {
-                "created_at": datetime.now().isoformat(),  # TODO - might not be quite the right ISOtime, investigate
-                "namespace": self.namespace,
-                "event": event,
-                "trace_id": "not-implemented",
-                "span_id": "not-implemented",
-                "severity": level_to_severity(level),
-                "data": data if data is not None else {},
-            }
+            "created_at": datetime.now().isoformat(),  # TODO - might not be quite the right ISOtime, investigate
+            "namespace": self.namespace,
+            "event": event,
+            "trace_id": "not-implemented",
+            "span_id": "not-implemented",
+            "severity": level_to_severity(level),
+            "data": data if data is not None else {},
+        }
 
         if error:
             log_entry["errors"] = create_error_dict(error)
@@ -100,7 +108,7 @@ class DpLogger:
         """
         self._log(event, 10, raw=raw, data=data)
 
-    def info(self, event: str, raw: str= None, data: Dict =None):
+    def info(self, event: str, raw: str = None, data: Dict = None):
         """
         Log at the info level.
 
@@ -131,7 +139,9 @@ class DpLogger:
         """
         self._log(event, 40, error=error, raw=raw, data=data)
 
-    def critical(self, event: str, error: Exception, raw: str = None, data: Dict = None):
+    def critical(
+        self, event: str, error: Exception, raw: str = None, data: Dict = None
+    ):
         """
         IMPORTANT: You should only be logging at the critical level during
         application failure, i.e if you're app is not in this process of falling
@@ -145,4 +155,3 @@ class DpLogger:
         data : arbitrary key values pairs that may be of use in providing context
         """
         self._log(event, 50, error=error, raw=raw, data=data)
-
