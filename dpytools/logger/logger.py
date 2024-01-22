@@ -81,9 +81,7 @@ class DpLogger:
 
     def _create_log_entry(self, event, level, data, error, raw) -> Dict:
         log_entry = {
-            "created_at": datetime.now(
-                timezone.utc
-            ).isoformat(),  # TODO - might not be quite the right ISOtime, investigate
+            "created_at": datetime.now(timezone.utc).isoformat(),
             "namespace": self.namespace,
             "event": event,
             "trace_id": "not-implemented",
