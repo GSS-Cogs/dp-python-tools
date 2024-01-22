@@ -1,0 +1,79 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "event": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "event": {
+                    "type": "string"
+                },
+                "trace_id": {
+                    "type": "string"
+                },
+                "span_id": {
+                    "type": "string"
+                },
+                "severity": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object"
+                },
+                "raw": {
+                    "type": "string"
+                },
+                "errors": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "stack_trace": {
+                                    "type": "array",
+                                    "items": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "message",
+                                "stack_trace"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "created_at",
+                "namespace",
+                "event",
+                "trace_id",
+                "span_id",
+                "severity",
+                "errors"
+            ]
+        },
+        "log_level": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "event",
+        "log_level"
+    ]
+}
