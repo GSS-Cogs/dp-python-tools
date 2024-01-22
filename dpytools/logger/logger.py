@@ -2,7 +2,7 @@ from typing import Dict, List, Optional, Union
 import structlog
 import traceback
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 def level_to_severity(level: int) -> int:
@@ -81,7 +81,9 @@ class DpLogger:
 
     def _create_log_entry(self, event, level, data, error, raw) -> Dict:
         log_entry = {
-            "created_at": datetime.now().isoformat(),  # TODO - might not be quite the right ISOtime, investigate
+            "created_at": datetime.now(
+                timezone.utc
+            ).isoformat(),  # TODO - might not be quite the right ISOtime, investigate
             "namespace": self.namespace,
             "event": event,
             "trace_id": "not-implemented",
