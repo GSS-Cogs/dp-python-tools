@@ -1,25 +1,31 @@
-import os
 import logging
 from dpytools.http_clients.base import BaseHttpClient
 
 class SlackNotifier:
 
-    def __init__(self):
-        self.webhook_url = os.getenv("SLACK_WEBHOOK_URL")
-        if not self.webhook_url:
-            raise ValueError('SLACK_WEBHOOK_URL is not set')
+    def __init__(self, webhook_url):
+        if not webhook_url:
+            raise ValueError('webhook_url is not set')
+        self.webhook_url = webhook_url
         self.http_client = BaseHttpClient()
-        self.validate_webhook_url()
 
-    def validate_webhook_url(self):
-        response = self.http_client.get(self.webhook_url)
-        if response.status_code != 200:
-            logging.error(f'Invalid SLACK_WEBHOOK_URL: {response.status_code}')
-            raise ValueError('Invalid SLACK_WEBHOOK_URL')
+    def notify(self, msg_dict: dict):
+        """
+        Send a message to the Slack webhook.
 
-    def notify(self, msg: dict):
+        The msg_dict parameter should be a dictionary that matches the
+        structure documented at https://api.slack.com/messaging/webhooks
+        """
         try:
-            response = self.http_client.post(self.webhook_url, json=msg)
+            response = self.http_client.post(self.webhook_url, json=msg_dict)
             response.raise_for_status()
         except Exception as e:
             logging.error(f'Failed to send notification: {e}')
+
+    def msg_str(self, msg: str):
+        """
+        Send a string message to the Slack webhook.
+
+        The msg parameter is wrapped into a dictionary before being sent.
+        """
+        self.notify({'text': msg})
