@@ -103,7 +103,7 @@ class DpLogger:
         Log at the debug level.
 
         event: the thing that's happened, a simple short english statement
-        raw  : a raw string of any log messages captured for a third paty library
+        raw  : a raw string of any log messages captured for a third party library
         data : arbitrary key values pairs that may be of use in providing context
         """
         self._log(event, 10, raw=raw, data=data)
