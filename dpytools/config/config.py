@@ -1,7 +1,6 @@
 from typing import Dict
 
-from properties.base import BaseProperty
-
+from .properties.base import BaseProperty
 
 class Config:
 

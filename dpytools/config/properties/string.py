@@ -1,6 +1,6 @@
 from typing import Optional
 
-from base import BaseProperty
+from .base import BaseProperty
 
 
 class StringProperty(BaseProperty):
