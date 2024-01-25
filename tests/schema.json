@@ -1,0 +1,50 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "event": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "event": {
+                    "type": "string"
+                },
+                "trace_id": {
+                    "type": "string"
+                },
+                "span_id": {
+                    "type": "string"
+                },
+                "severity": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object"
+                },
+                "raw": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "created_at",
+                "namespace",
+                "event",
+                "trace_id",
+                "span_id",
+                "severity"
+            ]
+        },
+        "log_level": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "event",
+        "log_level"
+    ]
+}
