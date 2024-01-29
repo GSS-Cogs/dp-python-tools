@@ -1,11 +1,9 @@
 from typing import Optional
-
+from dataclasses import dataclass
 from .base import BaseProperty
 
-
+@dataclass
 class IntegerProperty(BaseProperty):
-    # TODO: Is there any scenario where IntegerProperty should have regex?
-    regex: Optional[str]
     min_val: Optional[int]
     max_val: Optional[int]
 
@@ -25,14 +23,10 @@ class IntegerProperty(BaseProperty):
         run against a configuration value of this kind.
         """
         if not self.value:
-            raise ValueError(f"Integer value for {self.name} does not exist")
-        
-        if self.regex:
-            # TODO - confirm the value matches the regex
-            ...
+            raise ValueError(f"Integer value for {self.name} does not exist.")
 
-        if self.min_val:
-            assert self.value >= self.min_val
+        if self.min_val and self.value < self.min_val:
+            raise ValueError(f"Integer value for {self.name} is lower than allowed minimum.")
 
-        if self.max_val:
-            assert self.value <= self.max_val
+        if self.max_val and self.value > self.max_val:
+            raise ValueError(f"Integer value for {self.name} is higher than allowed maximum.")

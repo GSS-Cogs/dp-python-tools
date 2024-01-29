@@ -1,8 +1,8 @@
 from typing import Optional
-
+from dataclasses import dataclass
 from .base import BaseProperty
 
-
+@dataclass
 class StringProperty(BaseProperty):
     regex: Optional[str]
     min_len: Optional[int]
@@ -23,20 +23,20 @@ class StringProperty(BaseProperty):
         Non type based validation you might want to
         run against a configuration value of this kind.
         """
+        
         if len(self.value) == 0:
             raise ValueError(f"Str value for {self.name} is an empty string")
         
         if self.regex:
             # TODO - confirm the value matches the regex
-            ...
-            assert self.value == self.regex
+            pass
 
         if self.min_len:
             # TODO - confirm the string matches of exceeds the minimum length
-            ...
-            assert len(self.value) >= self.min_len
+            if len(self.value) < self.min_len:
+                raise ValueError(f"Str value for {self.name} is shorter than minimum length {self.min_len}")
 
         if self.max_len:
             # TODO - confirm the value matches or is less than the max length
-            ...
-            assert len(self.value) <= self.max_len
+            if len(self.value) > self.max_len:
+                raise ValueError(f"Str value for {self.name} is longer than maximum length {self.max_len}")
