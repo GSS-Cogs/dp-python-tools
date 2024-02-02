@@ -1,5 +1,5 @@
 import pytest
-from properties import StringProperty
+from dpytools.config.properties.string import StringProperty
 
 def test_string_property():
     """

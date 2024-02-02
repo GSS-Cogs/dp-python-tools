@@ -1,5 +1,5 @@
 import pytest
-from properties import IntegerProperty
+from dpytools.config.properties import IntegerProperty
 
 def test_int_property():
     """
@@ -16,6 +16,7 @@ def test_int_property():
 
     test_property.type_is_valid()
     test_property.secondary_validation_passed()
+    assert test_property
 
 
 def test_int_property_type_invalid():
