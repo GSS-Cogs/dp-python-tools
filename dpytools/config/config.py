@@ -1,96 +1,85 @@
-from typing import Dict, List
+from __future__ import annotations
 
-from properties.base import BaseProperty
-from properties.string import StringProperty
-from properties.intproperty import IntegerProperty
+import os
+from typing import Any, Dict, List
+
+from .properties.base import BaseProperty
+from .properties.intproperty import IntegerProperty
+from .properties.string import StringProperty
 
 
 class Config:
+
+    def __init__(self):
+        self._properties_to_validate: List[BaseProperty] = []
+
     @staticmethod
-    def from_env(config_dict: Dict[str, Dict[str, BaseProperty]]):
-        # TODO = read in and populate property classes as
-        # per the example in the main readme.
-        # You need to populate with dot notation in mind so:
-        #
-        # StringProperty("fieldname", "fieldvalue")
-        #
-        # should be accessed on Config/self, so:
-        #
-        # value = config.fieldvalue.value
-        # i.e
-        # config.fieldvalue = StringProperty("fieldname", "fieldvalue")
-        #
-        # Worth looking at the __setattr_ dunder method and a loop
-        # for how to do this.
-        #
-        # Do track the BaseProperty's that you add ready for
-        # assert_valid_config call.
+    def from_env(config_dict: Dict[str, Dict[str, Any]]) -> Config:
 
-        def __init__(self, config_dict):
-            for key, value in config_dict.items():
+        config = Config()
 
-                if value["class"] == StringProperty:
-                    if value["kwargs"]:
-                        regex = value["kwargs"].get("regex")
-                        min_len = value["kwargs"].get("min_len")
-                        max_len = value["kwargs"].get("max_len")
-                    else:
-                        regex = None
-                        min_len = None
-                        max_len = None
+        for env_var_name, value in config_dict.items():
 
-                    # Best way to determine populating regex, min len, max len
-                    # if they are none?
-                    stringprop = StringProperty(
-                        name=value["property"],
-                        value=value,
-                        regex=regex,
-                        min_len=min_len,
-                        max_len=max_len,
-                    )
+            value_for_property = os.environ.get(env_var_name, None)
+            assert (
+                value_for_property is not None
+            ), f'Required envionrment value "{env_var_name}" could not be found.'
 
-                    prop_name = value["property"]
-
-                    # Need a good design so assert_valid_config can be called
-                    # on each property. Or possibly add properties to list
-                    # and make assert_valid_config iterate through
-                    self.assert_valid_config(stringprop)
-
-                    setattr(self, prop_name, stringprop)
-
-                elif value["class"] == IntegerProperty:
-                    if value["kwargs"]:
-                        min_val = value["kwargs"].get("min_val")
-                        max_val = value["kwargs"].get("max_val")
-                    else:
-                        min_val = None
-                        max_val = None
-
-                    intprop = IntegerProperty(
-                        name=value["property"],
-                        value=value,
-                        min_val=min_val,
-                        max_val=max_val,
-                    )
-
-                    prop_name = value["property"]
-
-                    self.assert_valid_config(intprop)
-
-                    setattr(self, prop_name, intprop)
-
+            if value["class"] == StringProperty:
+                if value["kwargs"]:
+                    regex = value["kwargs"].get("regex")
+                    min_len = value["kwargs"].get("min_len")
+                    max_len = value["kwargs"].get("max_len")
                 else:
-                    raise ValueError(
-                        "Incorrect value type specified for property assignment."
-                    )
+                    regex = None
+                    min_len = None
+                    max_len = None
 
-    def assert_valid_config(self, prop: BaseProperty):
+                stringprop = StringProperty(
+                    name=value["property"],
+                    value=value_for_property,
+                    regex=regex,
+                    min_len=min_len,
+                    max_len=max_len,
+                )
+
+                prop_name = value["property"]
+                setattr(config, prop_name, stringprop)
+                config._properties_to_validate.append(stringprop)
+
+            elif value["class"] == IntegerProperty:
+                if value["kwargs"]:
+                    min_val = value["kwargs"].get("min_val")
+                    max_val = value["kwargs"].get("max_val")
+                else:
+                    min_val = None
+                    max_val = None
+
+                intprop = IntegerProperty(
+                    name=value["property"],
+                    value=value_for_property,
+                    min_val=min_val,
+                    max_val=max_val,
+                )
+
+                prop_name = value["property"]
+                setattr(config, prop_name, intprop)
+                config._properties_to_validate.append(intprop)
+
+            else:
+                raise TypeError(
+                    "Incorrect value type specified for property assignment."
+                )
+
+        return config
+
+    def assert_valid_config(self):
         """
         Assert that then Config class has the properties that
         provided properties.
         """
-        # For each of the properties you imbided above, run
-        # self.type_is_valid()
-        # self.secondary_validation()
-        prop.type_is_valid()
-        prop.secondary_validation()
+        for property in self._properties_to_validate:
+            property.type_is_valid()
+            property.secondary_validation()
+
+        self._properties_to_validate = []

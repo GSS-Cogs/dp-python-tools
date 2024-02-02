@@ -1,5 +1,6 @@
 {
     "python.testing.pytestArgs": [
+        "tests",
         "dpytools"
     ],
     "python.testing.unittestEnabled": false,
