@@ -4,28 +4,16 @@ from typing import Any, Union, Tuple, Optional
 
 @dataclass
 class BaseProperty(metaclass=ABCMeta):
-    name: str
-    value: Any
+    _name: str
+    _value: Any
 
-    # TODO: getter
-    # allow someone to get the property
-    def _get_name(self):
-        return self.name
+    @property
+    def name(self):
+        return self._name
 
-    def _get_value(self):
-        return self.value
-
-    # TODO: setter
-    # categorically disallow anyone from
-    # changing a property after the class
-    # has been instantiated.
-    # Refuse to do it, and log an error.
-
-    def _set_name(self, value):
-        self.name = value
-
-    def _set_value(self, new_value):
-        self.value = new_value
+    @name.setter
+    def name(self, value):
+         raise ValueError(f"Trying to change name property to value {value} but you cannot change a property name after instantiation.")
 
     @abstractmethod
     def type_is_valid(self):
