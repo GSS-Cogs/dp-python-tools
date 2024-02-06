@@ -8,14 +8,14 @@ def test_string_property():
     """
 
     test_property = StringProperty(
-        name = "Test String Property",
-        value = "Test string value",
-        regex = "Test regex",
+        _name = "Test String Property",
+        _value = "Test string value",
+        regex = "Test",
         min_len = 1,
         max_len = 40
     )
 
-    test_property.secondary_validation_passed()
+    test_property.secondary_validation()
 
 
 def test_string_property_empty_val():
@@ -25,8 +25,8 @@ def test_string_property_empty_val():
     """
 
     test_property = StringProperty(
-        name = "Test String Property",
-        value = "",
+        _name = "Test String Property",
+        _value = "",
         regex = "Test regex",
         min_len = 1,
         max_len = 40
@@ -34,7 +34,7 @@ def test_string_property_empty_val():
 
     with pytest.raises(ValueError) as e:
 
-        test_property.secondary_validation_passed()
+        test_property.secondary_validation()
 
         assert (
             f"Str value for Test String Property is an empty string") in str(e.value)
@@ -47,8 +47,8 @@ def test_string_property_min_len():
     """
 
     test_property = StringProperty(
-        name = "Test String Property",
-        value = "Test string value",
+        _name = "Test String Property",
+        _value = "Test string value",
         regex = "Test regex",
         min_len = 50,
         max_len = 51
@@ -56,7 +56,7 @@ def test_string_property_min_len():
 
     with pytest.raises(ValueError) as e:
 
-        test_property.secondary_validation_passed()
+        test_property.secondary_validation()
 
         assert "Str value for Test String Property is shorter than minimum length 50" in str(e.value)
 
@@ -68,8 +68,8 @@ def test_string_property_max_len():
     """
 
     test_property = StringProperty(
-        name = "Test String Property",
-        value = "Test string value",
+        _name = "Test String Property",
+        _value = "Test string value",
         regex = "Test regex",
         min_len = 1,
         max_len = 2
@@ -77,7 +77,29 @@ def test_string_property_max_len():
 
     with pytest.raises(ValueError) as e:
 
-        test_property.secondary_validation_passed()
+        test_property.secondary_validation()
 
         assert (
             "Str value for Test String Property is longer than maximum length 2") in str(e.value)
+
+
+def test_string_property_regex_no_match():
+    """
+    Tests if a string property instance with a non-matching regex/value 
+    raises the expected error from secondary validation.
+    """
+
+    test_property = StringProperty(
+        _name = "Test String Property",
+        _value = "Test string value",
+        regex = "Test regex",
+        min_len = 1,
+        max_len = 50
+    )
+
+    with pytest.raises(ValueError) as e:
+
+        test_property.secondary_validation()
+
+        assert (
+            "Str value for Test String Property does not match the given regex.") in str(e.value)
