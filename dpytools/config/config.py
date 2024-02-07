@@ -33,8 +33,8 @@ class Config:
                     max_len = None
   
                 stringprop = StringProperty(
-                    name = value["property"],
-                    value = value_for_property,
+                    _name = value["property"],
+                    _value = value_for_property,
                     regex = regex,
                     min_len = min_len,
                     max_len = max_len
@@ -53,8 +53,8 @@ class Config:
                     max_val = None
 
                 intprop = IntegerProperty(
-                    name = value["property"],
-                    value = value_for_property,
+                    _name = value["property"],
+                    _value = value_for_property,
                     min_val = min_val,
                     max_val = max_val
                 )
