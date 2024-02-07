@@ -16,7 +16,11 @@ def test_int_property():
 
     test_property.type_is_valid()
     test_property.secondary_validation()
-    assert test_property
+    
+    assert test_property._name == "Test Integer property"
+    assert test_property._value == 24
+    assert test_property.min_val == 0
+    assert test_property.max_val == 101
 
 
 def test_int_property_type_invalid():

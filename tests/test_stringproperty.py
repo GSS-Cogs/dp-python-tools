@@ -17,6 +17,12 @@ def test_string_property():
 
     test_property.secondary_validation()
 
+    assert test_property._name == "Test String Property"
+    assert test_property._value == "Test string value"
+    assert test_property.regex == "Test"
+    assert test_property.min_len == 1
+    assert test_property.max_len == 40
+
 
 def test_string_property_empty_val():
     """

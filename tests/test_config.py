@@ -48,19 +48,19 @@ def test_config_loader(monkeypatch):
     
     # Assertions
 
-    assert config.name1.name == "name1"
-    assert config.name1.value == "Some string value"
+    assert config.name1._name == "name1"
+    assert config.name1._value == "Some string value"
     assert config.name1.min_len == 10
     assert config.name1.regex == "I match a thing"
 
-    assert config.name2.name == "name2"
-    assert config.name2.value == "https://test.com/some-url"
+    assert config.name2._name == "name2"
+    assert config.name2._value == "https://test.com/some-url"
     assert config.name2.regex == "https://.*"
     assert config.name2.max_len == 100
 
-    assert config.name3.name == "name3"
-    assert config.name3.min_val == 5
-    assert config.name3.max_val == 27
+    assert config.name3._name == "name3"
+    assert config.name3._min_val == 5
+    assert config.name3._max_val == 27
 
 
 def test_config_loader_no_values_error():
