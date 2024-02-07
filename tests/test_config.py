@@ -59,8 +59,8 @@ def test_config_loader(monkeypatch):
     assert config.name2.max_len == 100
 
     assert config.name3._name == "name3"
-    assert config.name3._min_val == 5
-    assert config.name3._max_val == 27
+    assert config.name3.min_val == 5
+    assert config.name3.max_val == 27
 
 
 def test_config_loader_no_values_error():
