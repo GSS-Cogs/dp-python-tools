@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Union, Tuple, Optional
+from typing import Any
+
 
 @dataclass
 class BaseProperty(metaclass=ABCMeta):
@@ -20,7 +21,7 @@ class BaseProperty(metaclass=ABCMeta):
     def type_is_valid(self):
         """
         Validate that the property looks like
-        its of the correct type 
+        its of the correct type
         """
         ...
 

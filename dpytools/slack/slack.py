@@ -1,11 +1,12 @@
 import logging
+
 from dpytools.http_clients.base import BaseHttpClient
 
-class SlackNotifier:
 
+class SlackNotifier:
     def __init__(self, webhook_url):
         if not webhook_url:
-            raise ValueError('webhook_url is not set')
+            raise ValueError("webhook_url is not set")
         self.webhook_url = webhook_url
         self.http_client = BaseHttpClient()
 
@@ -20,7 +21,7 @@ class SlackNotifier:
             response = self.http_client.post(self.webhook_url, json=msg_dict)
             response.raise_for_status()
         except Exception as e:
-            logging.error(f'Failed to send notification: {e}')
+            logging.error(f"Failed to send notification: {e}")
 
     def msg_str(self, msg: str):
         """
@@ -28,4 +29,4 @@ class SlackNotifier:
 
         The msg parameter is wrapped into a dictionary before being sent.
         """
-        self.notify({'text': msg})
+        self.notify({"text": msg})

@@ -1,7 +1,8 @@
+import logging
+
 import backoff
 import requests
 from requests.exceptions import HTTPError
-import logging
 
 
 # Function to log retry attempts
