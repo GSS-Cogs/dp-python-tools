@@ -43,10 +43,10 @@ def do_something(level: str):
 
 # Schemas to validate log entries against
 # Created with https://www.liquid-technologies.com/online-json-to-schema-converter
-with open("tests/schema.json", "r") as fp:
+with open("tests/test_cases/logging_schema.json", "r") as fp:
     schema = json.load(fp)
 
-with open("tests/schema_with_error.json", "r") as fp:
+with open("tests/test_cases/logging_schema_with_error.json", "r") as fp:
     schema_with_error = json.load(fp)
 
 

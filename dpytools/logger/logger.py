@@ -1,8 +1,9 @@
-from typing import Dict, List, Optional, Union
-import structlog
-import traceback
 import json
+import traceback
 from datetime import datetime, timezone
+from typing import Dict, List, Optional
+
+import structlog
 
 
 def level_to_severity(level: int) -> int:

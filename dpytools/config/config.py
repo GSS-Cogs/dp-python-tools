@@ -2,8 +2,8 @@ from typing import Dict
 
 from .properties.base import BaseProperty
 
-class Config:
 
+class Config:
     @staticmethod
     def from_env(config_dict: Dict[str, BaseProperty]):
         # TODO = read in and populate property classes as
@@ -34,5 +34,3 @@ class Config:
         # For each of the properties you imbided above, run
         # self.type_is_valid()
         # self.secondary_validation()
-
-        
