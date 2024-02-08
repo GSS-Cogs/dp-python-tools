@@ -67,8 +67,9 @@ class Config:
                 config._properties_to_validate.append(intprop)
 
             else:
+                prop_type = value["class"]
                 raise TypeError(
-                    "Incorrect value type specified for property assignment."
+                    f"Unsupported property type specified via 'property' field, got {prop_type}. Should be of type StringProperty or IntegerProperty"
                 )
 
         return config

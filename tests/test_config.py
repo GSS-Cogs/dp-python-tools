@@ -22,7 +22,7 @@ def test_config_loader(monkeypatch):
         "class": StringProperty,
         "property": "name1",
         "kwargs": {
-            "regex": "I match a thing",
+            "regex": "string value",
             "min_len": 10
         },
     },
@@ -48,17 +48,17 @@ def test_config_loader(monkeypatch):
     
     # Assertions
 
-    assert config.name1._name == "name1"
-    assert config.name1._value == "Some string value"
+    assert config.name1.name == "name1"
+    assert config.name1.value == "Some string value"
     assert config.name1.min_len == 10
-    assert config.name1.regex == "I match a thing"
+    assert config.name1.regex == "string value"
 
-    assert config.name2._name == "name2"
-    assert config.name2._value == "https://test.com/some-url"
+    assert config.name2.name == "name2"
+    assert config.name2.value == "https://test.com/some-url"
     assert config.name2.regex == "https://.*"
     assert config.name2.max_len == 100
 
-    assert config.name3._name == "name3"
+    assert config.name3.name == "name3"
     assert config.name3.min_val == 5
     assert config.name3.max_val == 27
 
@@ -113,4 +113,4 @@ def test_config_loader_incorrect_type_error(monkeypatch):
 
         config = Config.from_env(config_dictionary)
 
-        assert "Incorrect value type specified for property assignment." in str(e.value)
+        assert "Unsupported property type specified via 'property' field, got <class 'int'>. Should be of type StringProperty or IntegerProperty" in str(e.value)
