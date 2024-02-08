@@ -15,6 +15,14 @@ class BaseProperty(metaclass=ABCMeta):
     def name(self, value):
          raise ValueError(f"Trying to change name property to value {value} but you cannot change a property name after instantiation.")
 
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        raise ValueError(f"Trying to change value to {value} but you cannot change a property value after instantiation.")
+
     @abstractmethod
     def type_is_valid(self):
         """
