@@ -10,16 +10,16 @@ from jsonschema import ValidationError
 def validate_json_schema(
     schema_path: Union[Path, str],
     data_dict: Optional[Dict] = None,
-    data_path: Union[Path, str, None] = None,
-    error_msg: Optional[str] = "",
-    indent: Optional[int] = 2,
+    data_path: Optional[Union[Path, str]] = None,
+    error_msg: Optional[str] = None,
+    indent: Optional[int] = None,
 ):
     """
-    Validate metadata.json files against schema.
+    Validate a JSON file against a schema.
 
     Either `data_dict` or `data_path` must be provided.
 
-    `msg` and `indent` are used to format the error message if validation fails.
+    `error_msg` and `indent` can be used to format the error message if validation fails.
     """
     # Confirm that *either* `data_dict` *or* `data_path` has been provided, otherwise raise ValueError
     if data_dict and data_path:
@@ -46,14 +46,19 @@ def validate_json_schema(
     # Load data to be validated as dict
     if data_dict:
         if not isinstance(data_dict, Dict):
-            raise ValueError("Invalid data format")
+            raise ValueError(
+                "Invalid data format, `data_dict` should be a Python dictionary"
+            )
         data_to_validate = data_dict
 
     if data_path:
         if isinstance(data_path, str):
             data_path = Path(data_path).absolute()
         if not isinstance(data_path, Path):
-            raise ValueError("Invalid data format")
+            raise ValueError(
+                "Invalid data format, `data_path` should be a pathlib.Path or string of file location"
+            )
+        # Check `data_path` exists
         if not data_path.exists():
             raise ValueError(f"Data path '{data_path}' does not exist")
         with open(data_path, "r") as f:
@@ -78,5 +83,6 @@ Error location: {error_location}
 JSON data:
 {json.dumps(data_to_validate, indent=indent)}
 """
+            print(formatted_msg)
             raise ValidationError(formatted_msg) from err
         raise err

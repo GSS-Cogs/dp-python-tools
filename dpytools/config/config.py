@@ -9,17 +9,14 @@ from .properties.string import StringProperty
 
 
 class Config:
-
     def __init__(self):
         self._properties_to_validate: List[BaseProperty] = []
 
     @staticmethod
     def from_env(config_dict: Dict[str, Dict[str, Any]]) -> Config:
-
         config = Config()
 
         for env_var_name, value in config_dict.items():
-
             value_for_property = os.environ.get(env_var_name, None)
             assert (
                 value_for_property is not None
