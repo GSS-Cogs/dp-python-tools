@@ -1,8 +1,8 @@
-from typing import Optional
-from dataclasses import dataclass
-from .base import BaseProperty
-
 import re
+from dataclasses import dataclass
+from typing import Optional
+
+from .base import BaseProperty
 
 
 @dataclass

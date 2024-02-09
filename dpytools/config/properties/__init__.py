@@ -1,2 +1,2 @@
-from .string import StringProperty
 from .intproperty import IntegerProperty
+from .string import StringProperty

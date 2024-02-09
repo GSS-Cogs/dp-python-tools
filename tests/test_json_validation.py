@@ -15,7 +15,6 @@ def test_validate_json_schema_data_path():
         validate_json_schema(
             schema_path=pipeline_config_schema,
             data_path=pipeline_config,
-            error_msg="Validating pipeline_config.json",
         )
         is None
     )
@@ -38,7 +37,6 @@ def test_validate_json_schema_data_dict():
         validate_json_schema(
             schema_path=pipeline_config_schema,
             data_dict=pipeline_config,
-            error_msg="Validating pipeline_config dict",
         )
         is None
     )
@@ -88,7 +86,7 @@ def test_validate_json_schema_no_data_dict_or_data_path():
 
 def test_validate_json_schema_invalid_data_path_format():
     """
-    Raise ValueError if data_path is not a file path
+    Raise ValueError if data_path is not a string or file path
     """
     pipeline_config_schema = "tests/test_cases/pipeline_config_schema.json"
     pipeline_config = ["Invalid", "data", "format"]
@@ -96,7 +94,10 @@ def test_validate_json_schema_invalid_data_path_format():
         validate_json_schema(
             schema_path=pipeline_config_schema, data_path=pipeline_config
         )
-    assert "Invalid data format" in str(err.value)
+    assert (
+        "Invalid data format, `data_path` should be a pathlib.Path or string of file location"
+        in str(err.value)
+    )
 
 
 def test_validate_json_schema_invalid_data_dict_format():
@@ -109,12 +110,14 @@ def test_validate_json_schema_invalid_data_dict_format():
         validate_json_schema(
             schema_path=pipeline_config_schema, data_dict=pipeline_config
         )
-    assert "Invalid data format" in str(err.value)
+    assert "Invalid data format, `data_dict` should be a Python dictionary" in str(
+        err.value
+    )
 
 
 def test_validate_json_schema_url():
     """
-    Raise NotImplementedError if schema path is a URL (i.e. not a local file)
+    Raise NotImplementedError if `schema_path` is a URL (i.e. not a local file)
     """
     pipeline_config_schema = "http://example.org"
     pipeline_config = "tests/test_cases/pipeline_config.json"
