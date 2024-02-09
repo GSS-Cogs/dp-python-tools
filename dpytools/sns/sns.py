@@ -1,4 +1,3 @@
-
 # See here: https://docs.aws.amazon.com/code-library/latest/ug/python_3_sns_code_examples.html
 # Ideally we want to publish a message by passing in a dictionary.
 # If SNS doesn not support that stringify any dict that is a message
@@ -12,12 +11,11 @@
 
 from typing import Union
 
+
 # Note: return True if it works and False if we hit errors
 # (so we can control the flow in calling programs)
 def publish(topic: str, msg: Union[str, dict]) -> bool:
-    """
-    
-    """
+    """ """
 
 
 # For this you'll want boto3 again, create a subscription
@@ -25,7 +23,6 @@ def publish(topic: str, msg: Union[str, dict]) -> bool:
 # The get_message() needs to pull from the queue that's
 # been subscribed to.
 class Subscription:
-
     def __init__(self, topic):
         """
         subscrube to a topic (i.e setup to read messages)
