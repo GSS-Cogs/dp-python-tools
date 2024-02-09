@@ -45,6 +45,9 @@ def test_validate_json_schema_data_dict():
 
 
 def test_validate_json_schema_data_dict_and_data_path():
+    """
+    Raise ValueError if both `data_dict` and `data_path` are provided
+    """
     pipeline_config_schema = "tests/test_cases/pipeline_config_schema.json"
     pipeline_config_path = "tests/test_cases/pipeline_config.json"
     pipeline_config_dict = {
@@ -68,6 +71,9 @@ def test_validate_json_schema_data_dict_and_data_path():
 
 
 def test_validate_json_schema_no_data_dict_or_data_path():
+    """
+    Raise ValueError if neither `data_dict` or `data_path` are provided
+    """
     pipeline_config_schema = "tests/test_cases/pipeline_config_schema.json"
 
     with pytest.raises(ValueError) as err:
@@ -120,6 +126,9 @@ def test_validate_json_schema_url():
 
 
 def test_validate_json_schema_invalid_schema_path():
+    """
+    Raise ValueError if `schema_path` does not exist
+    """
     pipeline_config_schema = "tests/test_cases/does_not_exist.json"
     pipeline_config = "tests/test_cases/pipeline_config.json"
     schema_path = Path(pipeline_config_schema).absolute()
@@ -131,6 +140,9 @@ def test_validate_json_schema_invalid_schema_path():
 
 
 def test_validate_json_schema_invalid_data_path():
+    """
+    Raise ValueError if `data_path` does not exist
+    """
     pipeline_config_schema = "tests/test_cases/pipeline_config_schema.json"
     pipeline_config = "tests/test_cases/does_not_exist.json"
     data_path = Path(pipeline_config).absolute()
@@ -143,7 +155,7 @@ def test_validate_json_schema_invalid_data_path():
 
 def test_validate_json_schema_data_path_required_field_missing():
     """
-    Raises ValidationError due to missing field in data (as file path) being validated
+    Raises ValidationError due to missing field in `data_path` JSON
     """
     pipeline_config_schema = "tests/test_cases/pipeline_config_schema.json"
     pipeline_config = "tests/test_cases/pipeline_config_missing_required_field.json"
@@ -158,7 +170,7 @@ def test_validate_json_schema_data_path_required_field_missing():
 
 def test_validate_json_schema_data_path_invalid_data_type():
     """
-    Raises ValidationError due to invalid data type in data (as file path) being validated
+    Raises ValidationError due to invalid data type in `data_path` JSON
     """
     pipeline_config_schema = "tests/test_cases/pipeline_config_schema.json"
     pipeline_config = "tests/test_cases/pipeline_config_invalid_data_type.json"
@@ -173,7 +185,7 @@ def test_validate_json_schema_data_path_invalid_data_type():
 
 def test_validate_json_schema_data_dict_required_field_missing():
     """
-    Raises ValidationError due to missing field in data (as dictionary) being validated
+    Raises ValidationError due to missing field in `data_dict`
     """
     pipeline_config_schema = "tests/test_cases/pipeline_config_schema.json"
     pipeline_config = {
@@ -194,7 +206,7 @@ def test_validate_json_schema_data_dict_required_field_missing():
 
 def test_validate_json_schema_data_dict_invalid_data_type():
     """
-    Raises ValidationError due to invalid data type in data (as dictionary) being validated
+    Raises ValidationError due to invalid data type in `data_dict`
     """
     pipeline_config_schema = "tests/test_cases/pipeline_config_schema.json"
     pipeline_config = {

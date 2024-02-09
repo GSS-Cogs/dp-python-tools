@@ -19,7 +19,7 @@ def validate_json_schema(
 
     Either `data_dict` or `data_path` must be provided.
 
-    `msg` and `indent` are used to format the error message if validation fails.
+    `error_msg` and `indent` are used to format the error message if validation fails.
     """
     # Confirm that *either* `data_dict` *or* `data_path` has been provided, otherwise raise ValueError
     if data_dict and data_path:
@@ -37,23 +37,27 @@ def validate_json_schema(
         if parsed_schema_path.scheme == "http":
             # TODO Load schema from URL
             raise NotImplementedError("Validation from remote schema not yet supported")
+        # Convert `schema_path` to pathlib.Path
         schema_path = Path(schema_path).absolute()
+    # Check `schema_path` exists
     if not schema_path.exists():
         raise ValueError(f"Schema path '{schema_path}' does not exist")
     with open(schema_path, "r") as f:
         schema_from_path = json.load(f)
 
-    # Load data to be validated as dict
+    # Load data to be validated
     if data_dict:
         if not isinstance(data_dict, Dict):
             raise ValueError("Invalid data format")
         data_to_validate = data_dict
 
     if data_path:
+        # Convert `data_path` to pathlib.Path
         if isinstance(data_path, str):
             data_path = Path(data_path).absolute()
         if not isinstance(data_path, Path):
             raise ValueError("Invalid data format")
+        # Check `data_path` exists
         if not data_path.exists():
             raise ValueError(f"Data path '{data_path}' does not exist")
         with open(data_path, "r") as f:
@@ -62,8 +66,8 @@ def validate_json_schema(
     # Validate data against schema
     try:
         jsonschema.validate(data_to_validate, schema_from_path)
+    # TODO Handle jsonschema.SchemaError?
     except jsonschema.ValidationError as err:
-        # TODO Handle jsonschema.SchemaError?
         # If error is in a specific field, get the JSON path of the error location
         if err.json_path != "$":
             error_location = err.json_path
@@ -73,8 +77,8 @@ def validate_json_schema(
         if error_msg or indent:
             formatted_msg = f"""
 Exception: {error_msg}
-Error details: {err.message}
-Error location: {error_location}
+Exception details: {err.message}
+Exception location: {error_location}
 JSON data:
 {json.dumps(data_to_validate, indent=indent)}
 """

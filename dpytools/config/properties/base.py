@@ -5,17 +5,24 @@ from typing import Any
 
 @dataclass
 class BaseProperty(metaclass=ABCMeta):
-    name: str
-    value: Any
+    _name: str
+    _value: Any
 
-    # TODO: getter
-    # allow someone to get the property
+    @property
+    def name(self):
+        return self._name
 
-    # TODO: setter
-    # categorically disallow anyone from
-    # changing a property after the class
-    # has been instantiated.
-    # Refuse to do it, and log an error.
+    @name.setter
+    def name(self, value):
+         raise ValueError(f"Trying to change name property to value {value} but you cannot change a property name after instantiation.")
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        raise ValueError(f"Trying to change value to {value} but you cannot change a property value after instantiation.")
 
     @abstractmethod
     def type_is_valid(self):
