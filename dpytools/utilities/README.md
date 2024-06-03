@@ -24,11 +24,3 @@ print(str_to_bool('false'))  # Outputs: False
 `AssertionError`: If the input value is not a string.
 `ValueError`: If the input string does not represent a boolean value.
 
-#### Example
-
-```python
-try:
-    print(str_to_bool('not a boolean'))  # Raises ValueError
-except ValueError as e:
-    print(e)  # Outputs: A str value representing a boolean should be one of 'True', 'true', 'False', 'false'. Got 'not a boolean'
-```
