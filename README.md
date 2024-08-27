@@ -35,3 +35,5 @@ For a full list of functionality provided by the makefile just run a naked `make
 ### Repository Organization
 
 Each client, helper etc should be a sub directory of `./dpytools`. Separation between these sub codebases should be maintained as much as possible aginst the day where we want to break some or all of these tools out into separate repositories.
+
+Copyright 2024 Office for National Statistics, under Crown Copyright
